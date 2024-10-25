@@ -26,6 +26,16 @@ jobs:
         API_TOKEN: ${{ secrets.API_TOKEN }}
         SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
         DEVICE_ID: ${{ secrets.DEVICE_ID }}
+        SWITCH_STATE: ${{ secrets.SWITCH_STATE }}
       run: |
         python reizouplagmini.py
 
+    - name: Toggle SWITCH_STATE
+      if: success()  # スクリプトの実行が成功した場合のみ状態を変更
+      run: |
+        echo "TOGGLING SWITCH_STATE..."
+        if [ "${{ secrets.SWITCH_STATE }}" == "OFF" ]; then
+          echo "SWITCH_STATE=ON" >> $GITHUB_ENV
+        else
+          echo "SWITCH_STATE=OFF" >> $GITHUB_ENV
+        fi
