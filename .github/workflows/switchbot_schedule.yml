@@ -1,9 +1,9 @@
 name: SwitchBot Plug Control
 
 on:
-  workflow_dispatch:  # 手動実行のトリガーを追加
   schedule:
     - cron: '*/30 * * * *'  # 30分ごとに実行
+  workflow_dispatch:  # 手動実行のトリガー
 
 jobs:
   run-script:
@@ -22,5 +22,9 @@ jobs:
         pip install requests
 
     - name: Run Python script
+      env:  # GitHub Secretsを環境変数として設定
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+        SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
+        DEVICE_ID: ${{ secrets.DEVICE_ID }}
       run: |
         python reizouplagmini.py
