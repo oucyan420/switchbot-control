@@ -10,6 +10,7 @@ import base64
 api_token = os.getenv('API_TOKEN')
 secret_token = os.getenv('SECRET_TOKEN')
 device_id = os.getenv('DEVICE_ID')
+switch_state = os.getenv('SWITCH_STATE')  # "ON" または "OFF" を保持する環境変数
 
 def send_command(api_token, secret_token, device_id, command):
     url = f"https://api.switch-bot.com/v1.1/devices/{device_id}/commands"
@@ -37,12 +38,12 @@ def send_command(api_token, secret_token, device_id, command):
     response = requests.post(url, headers=headers, json=body)
     print(f"Sending {command} command: {response.text}")
 
-# 30分ごとにON/OFFを切り替える
-while True:
-    # プラグ電源オン
-    send_command(api_token, secret_token, device_id, "turnOn")
-    time.sleep(30 * 60)  # 30分待機
-
-    # プラグ電源オフ
+# 現在の状態に基づきオンまたはオフを実行
+if switch_state == "OFF":
+    # プラグ電源をオフにする
     send_command(api_token, secret_token, device_id, "turnOff")
-    time.sleep(30 * 60)  # 30分待機
+    print("Switch state set to OFF")
+else:
+    # プラグ電源をオンにする
+    send_command(api_token, secret_token, device_id, "turnOn")
+    print("Switch state set to ON")
