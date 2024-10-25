@@ -1,0 +1,25 @@
+name: SwitchBot Plug Control
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # 30分ごとに実行
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Run Python script
+      run: |
+        python reizouplagmini.py
