@@ -1,6 +1,7 @@
 name: SwitchBot Plug Control
 
 on:
+  workflow_dispatch:  # 手動実行のトリガーを追加
   schedule:
     - cron: '*/30 * * * *'  # 30分ごとに実行
 
